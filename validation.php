@@ -1,5 +1,3 @@
-extra
-
 <?php
 include_once 'connect.php';
 
@@ -59,4 +57,13 @@ function test_input($data) {
   $data = htmlspecialchars($data);
   return $data;
 }
+
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if ( empty($_POST["name"])||empty($_POST["roll"])||empty($_POST["gender"])||empty($_POST["city"])||empty($_POST["coursename"])||empty($_POST["coursecode"])||empty($_POST["credithours"]) ) 
+  {
+    $nameErr = "Field is required!!";
+  }
+
 ?>

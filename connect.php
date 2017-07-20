@@ -8,13 +8,14 @@ class databaseConnect
 	      die('Could not connect to database!');
 	  } else {
 	      $this->myconn = $connect;
-	      echo 'Connection established!';}
+	      //echo 'Connection established!';
+	    }
 	  return $this->myconn;
   }
 
   function closeDb() {
     mysqli_close($myconn);
-    echo 'Connection closed!';
+    //echo 'Connection closed!';
   }
 }
 

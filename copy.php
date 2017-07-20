@@ -34,25 +34,16 @@ body{
 <?php
 
 $queryname = $queryroll = $querycity = $querygender = $querycoursecode = $querycoursename = $querycredithours = $checkstatusmale = $querystdname =
-  $checkstatusfemale = $searchvalue = $nameErr = $gender = "";
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if ( empty($_POST["name"])||empty($_POST["roll"])||empty($_POST["gender"])||empty($_POST["city"])||empty($_POST["coursename"])||empty($_POST["coursecode"])||empty($_POST["credithours"]) ) 
-  {
-    $nameErr = "Field is required!!";
-  }
-
-}
+  $checkstatusfemale = $searchvalue = "";
 
 if(isset($_POST['submit2']))
   {
    $searchvalue = $_POST['search'];
    $_SESSION['search'] = $_POST['search'];
      
-   $result = mysqli_query($newConnect->dbConnect(), "SELECT * from std_info WHERE name = '$searchvalue'") or die("Failed");
+   $result = mysqli_query($newConnect->dbConnect(), "SELECT * from std_info WHERE name = '$searchvalue'") or die("Data Didn't Inserted Succesfully");
 
-   $result2 = mysqli_query($newConnect->dbConnect(), "SELECT * from std_course WHERE stdname = '$searchvalue'") or die("Failed");
+   $result2 = mysqli_query($newConnect->dbConnect(), "SELECT * from std_course WHERE stdname = '$searchvalue'") or die("Data Didn't Inserted Succesfully");
 
     $row = mysqli_fetch_array($result);
 
@@ -75,6 +66,7 @@ if(isset($_POST['submit2']))
       $checkstatusfemale = "checked='checked'";
       $checkstatusmale = "";
     }
+
 }
 
 
@@ -108,7 +100,6 @@ echo "<form method='post'>
   <input type='submit' name='delete' value='Delete'>
 </form>";
 
-echo $nameErr;
 ?>
 </div>
 </body>
@@ -124,18 +115,40 @@ if(isset($_POST['submit']))
    $city = $_POST['city'];
    $gender = $_POST['gender'];
 
-  $stdname = $_POST['name'];
+  $stdname = $_POST['stdname'];
   $coursecode = $_POST['coursecode'];
   $coursename = $_POST['coursename'];
-  $credithours = $_POST['credithours'];
+  $credithour = $_POST['credithours'];
      
    mysqli_query($newConnect->dbConnect(), "INSERT INTO std_info(name,roll,city,gender) VALUES('$name', '$roll', '$city', '$gender')") or die("Data Didn't Inserted Succesfully");
 
-   mysqli_query($newConnect->dbConnect(), "INSERT INTO std_course(stdname, coursecode, coursename, credithours) VALUES('$stdname', '$coursecode', '$coursename', '$credithours')") or die("Data Didn't Inserted Succesfully");
-
+   mysqli_query($newConnect->dbConnect(), "INSERT INTO std_course(stdname, coursecode, coursename, credithour) VALUES('$stdname', '$coursecode', '$coursename, '$credithour')") or die("Data Didn't Inserted Succesfully");
 
     header("location:index.php");
 
+  }
+
+
+if(isset($_POST['update']))
+  {  
+   $name = $_POST['name'];
+   $roll = $_POST['roll'];
+   $city = $_POST['city'];
+   $gender = $_POST['gender'];
+
+  $stdname = $_POST['stdname'];
+  $coursecode = $_POST['coursecode'];
+  $coursename = $_POST['coursename'];
+  $credithour = $_POST['credithours'];
+  
+  $new = $_SESSION['search'];
+
+
+  mysqli_query($newConnect->dbConnect(), "UPDATE std_info SET name = '$name', roll = '$roll', city = '$city', gender = '$gender' WHERE name = '$new' " ) or die(mysqli_error($newConnect->dbConnect() ));
+  header("location:index.php");
+
+    mysqli_query($newConnect->dbConnect(), "UPDATE std_course SET name = '$stdname', coursecode = '$coursecode', coursename = '$coursename', credithour = '$credithour' WHERE name = '$new' " ) or die(mysqli_error($newConnect->dbConnect() ));
+  header("location:index.php");
   }
 
 if(isset($_POST['update']))
@@ -148,28 +161,15 @@ if(isset($_POST['update']))
   $stdname = $_POST['stdname'];
   $coursecode = $_POST['coursecode'];
   $coursename = $_POST['coursename'];
-  $credithours = $_POST['credithours'];
+  $credithour = $_POST['credithours'];
   
   $new = $_SESSION['search'];
 
   mysqli_query($newConnect->dbConnect(), "UPDATE std_info SET name = '$name', roll = '$roll', city = '$city', gender = '$gender' WHERE name = '$new' " ) or die(mysqli_error($newConnect->dbConnect() ));
   header("location:index.php");
 
-    mysqli_query($newConnect->dbConnect(), "UPDATE std_course SET name = '$stdname', coursecode = '$coursecode', coursename = '$coursename', credithours = '$credithours' WHERE name = '$new' " ) or die(mysqli_error($newConnect->dbConnect() ));
+    mysqli_query($newConnect->dbConnect(), "UPDATE std_course SET name = '$stdname', coursecode = '$coursecode', coursename = '$coursename', credithour = '$credithour' WHERE name = '$new' " ) or die(mysqli_error($newConnect->dbConnect() ));
   header("location:index.php");
-  }
-
-if(isset($_POST['delete']))
-  {
-
-  $new = $_SESSION['search'];
-
-  mysqli_query($newConnect->dbConnect(), "DELETE FROM std_info WHERE name = '$new' " ) or die(mysqli_error($newConnect->dbConnect() ));
-
-  mysqli_query($newConnect->dbConnect(), "DELETE FROM std_course WHERE stdname = '$new' " ) or die(mysqli_error($newConnect->dbConnect() ));
-  
-  header("location:index.php");
-
   }
 
 
